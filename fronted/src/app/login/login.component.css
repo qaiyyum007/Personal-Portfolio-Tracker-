@@ -83,3 +83,9 @@ label {
   margin-bottom: 4px;
 }
 
+.error-text {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+

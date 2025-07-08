@@ -39,25 +39,28 @@ export class LoginComponent {
     return this.loginForm.get('password');
   }
 
-  private async loginUser(formData: FormData) {
+  private async loginUser(formData: any): Promise<any> {
     try {
       const response = await lastValueFrom(this.auth.login(formData));
       sessionStorage.setItem('auth', JSON.stringify(response));
-      this.router.navigate(['/dashboard']);
+      return response; 
     } catch (error) {
       console.error('Login failed:', error);
+      throw error; 
     }
   }
 
   async onSubmit() {
     this.errorMessage.set(null);
     this.loginForm.markAllAsTouched();
+
     if (this.loginForm.invalid) return;
+
     this.isLoading.set(true);
     try {
       const response = await this.loginUser(this.loginForm.value);
       this.handleLoginSuccess(response);
-    } catch (error) {
+    } catch (error: any) {
       this.handleLoginError(error);
     } finally {
       this.isLoading.set(false);
@@ -69,7 +72,8 @@ export class LoginComponent {
   }
 
   private handleLoginError(error: any) {
-    this.errorMessage = error.message || 'Login failed. Please try again.';
+    const message = error?.error?.message || error?.message || 'Login failed. Please try again.';
+    this.errorMessage.set(message); // ✅ Fix signal update
   }
 
   goToRegister() {

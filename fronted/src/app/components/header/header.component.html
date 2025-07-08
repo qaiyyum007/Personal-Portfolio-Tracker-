@@ -1,6 +1,10 @@
 <header class="header-container">
   <div class="header-title">Personal Tracker</div>
 
+  <div class="hamburger" (click)="toggleMenu()" tabindex="0">
+    &#9776;
+  </div>
+
   <div class="profile-container" tabindex="0" (click)="toggleMenu()">
     <div class="profile-initials">
       {{ initials() }}
@@ -28,7 +32,7 @@
             {{ user().firstName + " " + user().lastName | uppercase }}
           </div>
           <div class="user-email">{{ user().email }}</div>
-          <div class="user-dob">DOB: {{ user().dob }}</div>
+          <div>DOB: {{ user().dob | date: 'mediumDate' }}</div>
           <div class="user-dob">Mobile: {{ user().mobile }}</div>
         </div>
       </div>

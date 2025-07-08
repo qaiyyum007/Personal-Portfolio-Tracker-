@@ -5,6 +5,11 @@ import { CommonModule } from '@angular/common';
 import { PortFolioComponent } from '../components/port-folio/port-folio.component';
 import { CardComponent } from '../components/card/card.component';
 import { HeaderComponent } from '../components/header/header.component';
+interface ProfileResponse {
+  message: string;
+  user: User;
+}
+
 
 export interface User {
   id: number;
@@ -39,6 +44,8 @@ export class DashboardComponent {
     this.showPortfolio = false;
   }
 
+
+
   togglePortfolio() {
     this.showPortfolio = !this.showPortfolio;
   }
@@ -47,21 +54,26 @@ export class DashboardComponent {
     this.getMyProfile();
   }
 
-  private async getMyProfile() {
-    try {
-      this.user.set(await lastValueFrom(this.dashBoard.getMyProfile()));
-    } catch (error) {
-      console.error('getMyProfile failed:', error);
-    }
+private async getMyProfile() {
+  try {
+   const response = await lastValueFrom(this.dashBoard.getMyProfile()) as unknown as ProfileResponse;
+this.user.set(response.user); 
+  } catch (error) {
+    console.error('❌ getMyProfile failed:', error);
+  }
+}
+
+encodeImageUrl(filename: string): string {
+  return `http://localhost:3000/uploads/profile/${filename}`;
+}
+
+
+
+closeOnOverlayClick(event: MouseEvent) {
+  if ((<HTMLElement>event.target).classList.contains('portfolio-modal-overlay')) {
+    this.closePortfolioModal();
   }
 
-  closeOnOverlayClick(event: MouseEvent) {
-    if (event.target === event.currentTarget) {
-      this.closePortfolioModal();
-    }
-  }
 
-  encodeImageUrl(fileName: string): string {
-  return `http://localhost:3000/uploads/${encodeURIComponent(fileName)}`;
 }
 }

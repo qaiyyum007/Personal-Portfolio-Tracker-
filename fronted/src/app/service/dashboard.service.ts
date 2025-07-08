@@ -22,12 +22,12 @@ export class DashboardService {
     private api = environment.apiBaseUrl;
   
 getAllUsers(): Observable<User[]> {
-  return this.http.get<User[]>(`${this.api}/dashboard`);
+  return this.http.get<User[]>(`${this.api}/auth`);
 }
 
 
 getMyProfile(): Observable<User> {
-  return this.http.get<User>(`${this.api}/dashboard/me`);
+  return this.http.get<User>(`${this.api}/auth/me`);
 }
 
 }

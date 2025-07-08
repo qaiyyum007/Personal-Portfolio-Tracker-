@@ -28,12 +28,12 @@ export class RegistrationComponent {
 
   constructor(private fb: FormBuilder) {
     this.userdataForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+       firstName: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
+     lastName: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
       email: ['', [Validators.required, Validators.email], [emailExistsValidator(this.auth)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       mobile: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      dob: ['', [Validators.required, this.ageValidator]],
+      dob: ['1995-07-01', [Validators.required, this.ageValidator]],
       profileImage: [null, Validators.required],
     });
   }

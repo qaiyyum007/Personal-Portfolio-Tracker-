@@ -2,7 +2,11 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { DashboardService } from '../../service/dashboard.service';
+import { DashboardService, User } from '../../service/dashboard.service';
+interface ProfileResponse {
+  message: string;
+  user: User;
+}
 
 @Component({
   selector: 'app-header',
@@ -24,21 +28,18 @@ export class HeaderComponent {
   ngOnInit() {
     this.getMyProfile();
   }
-
-  private async getMyProfile() {
-    try {
-      const response = await lastValueFrom(this.dashBoard.getMyProfile());
-      this.user.set(response);
-      return response;
-    } catch (error) {
-      console.error('Registration failed:', error);
-      return null;
-    }
+private async getMyProfile() {
+  try {
+   const response = await lastValueFrom(this.dashBoard.getMyProfile()) as unknown as ProfileResponse;
+this.user.set(response.user); 
+  } catch (error) {
+    console.error('❌ getMyProfile failed:', error);
   }
+}
 
-  encodeImageUrl(fileName: string): string {
-    return `http://localhost:3000/uploads/${encodeURIComponent(fileName)}`;
-  }
+encodeImageUrl(filename: string): string {
+  return `http://localhost:3000/uploads/profile/${filename}`;
+}
 
   initials = computed(() => {
     const u = this.user();
